@@ -80,7 +80,11 @@ class Task:
     def from_dict(cls, data: dict):
         """Десериализация задачи из словаря."""
         if data.get("type") == "UrgentTask":
-            return UrgentTask(data["title"], data["description"])
+            return UrgentTask(
+                data["title"],
+                data["description"],
+                Status[data["status"]]
+            )
         return cls(
             data["title"],
             data["description"],
@@ -98,12 +102,11 @@ class Task:
 
 class UrgentTask(Task):
     """Подкласс задачи, всегда с высоким приоритетом (демонстрация наследования)."""
-    def __init__(self, title: str, description: str):
-        super().__init__(title, description, Priority.HIGH, Status.TODO)
-
+    def __init__(self, title: str, description: str, status: Status = Status.TODO):
+        super().__init__(title, description, Priority.HIGH, status)
+        
     @Task.priority.setter
     def priority(self, value: Priority):
-        # Запрещаем менять приоритет у срочных задач
         if value != Priority.HIGH:
             raise ValueError("Срочная задача должна иметь высокий приоритет")
         Task.priority.fset(self, value)
