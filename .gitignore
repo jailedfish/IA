@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+# JSON save file (example)
+tasks.json
+
 # Distribution / packaging
 .Python
 build/
